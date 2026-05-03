@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lwyer — Advocates, Commissioners for Oaths & Notaries Public</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── CSS Reset & Variables ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:        #0f0f0f;
+      --near-black:   #1a1a1a;
+      --dark:         #2c2c2c;
+      --mid:          #555555;
+      --muted:        #888888;
+      --light-border: #e8e8e4;
+      --bg-off:       #f7f6f2;
+      --bg-warm:      #f2f0ea;
+      --white:        #ffffff;
+      --gold:         #c9a84c;
+      --gold-light:   #f5c842;
+
+      --font-serif:  'Playfair Display', Georgia, serif;
+      --font-sans:   'DM Sans', system-ui, sans-serif;
+
+      --nav-h: 68px;
+      --radius-card: 14px;
+      --radius-pill: 100px;
+
+      --shadow-soft: 0 4px 24px rgba(0,0,0,0.07);
+      --shadow-card: 0 8px 40px rgba(0,0,0,0.10);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      color: var(--near-black);
+      background: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    a  { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ─── Utility ───────────────────────────────────────────── */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    .section-label {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .stars {
+      display: flex;
+      gap: 2px;
+      color: var(--gold-light);
+      font-size: 14px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--black);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .06em;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+    }
+    .badge .dot {
+      width: 6px; height: 6px;
+      background: #4ade80;
+      border-radius: 50%;
+    }
+
+    /* ─── Buttons ───────────────────────────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--near-black);
+      color: var(--white);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 14px 22px;
+      border-radius: var(--radius-pill);
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: background .22s, transform .18s;
+    }
+    .btn-primary:hover { background: #333; transform: translateY(-1px); }
+    .btn-primary .toggle-knob {
+      width: 26px; height: 26px;
+      background: var(--white);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .btn-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px; height: 46px;
+      background: var(--white);
+      border: 1.5px solid var(--light-border);
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background .2s, border-color .2s, transform .18s;
+    }
+    .btn-circle:hover { background: var(--bg-off); transform: scale(1.06); }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--near-black);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 12px 20px;
+      border-radius: var(--radius-pill);
+      border: 1.5px solid var(--near-black);
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+    .btn-outline:hover { background: var(--near-black); color: var(--white); }
+
+    .btn-dark-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--near-black);
+      color: var(--white);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 18px 28px 18px 24px;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      transition: background .22s, transform .18s;
+    }
+    .btn-dark-pill:hover { background: #2a2a2a; transform: translateY(-1px); }
+    .btn-dark-pill .knob {
+      width: 32px; height: 32px;
+      background: var(--white);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      color: var(--near-black);
+    }
+
+    /* ─── Navigation ────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--light-border);
+      height: var(--nav-h);
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-logo svg { width: 20px; height: 20px; }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .nav-lang {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .06em;
+      color: var(--mid);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .nav-icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--near-black);
+      display: flex;
+      align-items: center;
+      transition: opacity .2s;
+    }
+    .nav-icon-btn:hover { opacity: .6; }
+    .nav-menu {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--near-black);
+      transition: opacity .2s;
+    }
+    .nav-menu:hover { opacity: .6; }
+    .hamburger { display: flex; flex-direction: column; gap: 4px; }
+    .hamburger span { display: block; width: 20px; height: 2px; background: var(--near-black); border-radius: 2px; }
+
+    /* ─── Hero ──────────────────────────────────────────────── */
+    .hero {
+      padding: 80px 0 60px;
+      background: var(--white);
+      overflow: hidden;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .hero-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .hero-badge-row .sep {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .hero-badge-row .sep::before {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 14px;
+      background: var(--light-border);
+    }
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(36px, 4.5vw, 58px);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -.02em;
+      color: var(--near-black);
+      margin-bottom: 22px;
+    }
+    .hero-desc {
+      font-size: 14px;
+      color: var(--mid);
+      line-height: 1.7;
+      max-width: 420px;
+      margin-bottom: 36px;
+    }
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .hero-imgs {
+      position: relative;
+      height: 500px;
+    }
+    .hero-img-main {
+      position: absolute;
+      top: 0; right: 0;
+      width: 78%;
+      height: 88%;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+    }
+    .hero-img-float {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 52%;
+      height: 52%;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      border: 5px solid var(--white);
+      box-shadow: var(--shadow-card);
+    }
+
+    /* ─── About ─────────────────────────────────────────────── */
+    .about {
+      padding: 100px 0;
+      background: var(--white);
+    }
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .about-left .section-label { margin-bottom: 28px; }
+    .about h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -.02em;
+      margin-bottom: 20px;
+    }
+    .about p {
+      font-size: 14px;
+      color: var(--mid);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .about-cta { margin-top: 32px; }
+    .about-imgs {
+      position: relative;
+      height: 420px;
+    }
+    .about-img-main {
+      position: absolute;
+      top: 0; left: 0;
+      width: 65%;
+      height: 78%;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+    }
+    .about-img-float {
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 60%;
+      height: 60%;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      border: 5px solid var(--white);
+      box-shadow: var(--shadow-card);
+    }
+    .reputation-badge {
+      position: absolute;
+      bottom: 70px; left: -10px;
+      background: var(--white);
+      border: 1px solid var(--light-border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      box-shadow: var(--shadow-soft);
+      z-index: 2;
+    }
+    .reputation-badge .rep-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      margin-bottom: 4px;
+    }
+    .reputation-badge .rep-sub {
+      font-size: 10px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* ─── Practice Areas ────────────────────────────────────── */
+    .expertise {
+      padding: 100px 0;
+      background: var(--bg-off);
+    }
+    .expertise-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+      margin-bottom: 60px;
+    }
+    .expertise-header .section-label { margin-bottom: 16px; }
+    .expertise h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -.02em;
+    }
+    .expertise-desc {
+      font-size: 14px;
+      color: var(--mid);
+      line-height: 1.75;
+    }
+    .practice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .practice-card {
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      position: relative;
+      height: 280px;
+      cursor: pointer;
+    }
+    .practice-card img { transition: transform .4s ease; }
+    .practice-card:hover img { transform: scale(1.05); }
+    .practice-card-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 20px;
+      background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%);
+    }
+    .practice-card-label span {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    /* ─── Testimonials ──────────────────────────────────────── */
+    .testimonials {
+      padding: 100px 0;
+      background: var(--white);
+    }
+    .testimonials-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+      margin-bottom: 60px;
+    }
+    .testimonials .section-label { margin-bottom: 16px; }
+    .testimonials h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -.02em;
+    }
+    .testimonials-desc {
+      font-size: 14px;
+      color: var(--mid);
+      line-height: 1.75;
+    }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .testimonial-card {
+      background: var(--bg-off);
+      border-radius: var(--radius-card);
+      padding: 28px;
+      position: relative;
+      transition: box-shadow .25s, transform .25s;
+    }
+    .testimonial-card:hover { box-shadow: var(--shadow-card); transform: translateY(-3px); }
+    .t-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .t-rating {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .t-rating .score {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--near-black);
+    }
+    .t-quote-icon {
+      font-size: 40px;
+      color: var(--near-black);
+      line-height: 1;
+      font-family: Georgia, serif;
+      font-weight: 900;
+    }
+    .t-body {
+      font-size: 13.5px;
+      color: var(--mid);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .t-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .t-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--bg-warm);
+    }
+    .t-name {
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .t-role {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* ─── Team ──────────────────────────────────────────────── */
+    .team {
+      padding: 100px 0;
+      background: var(--bg-off);
+    }
+    .team-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+      margin-bottom: 60px;
+    }
+    .team .section-label { margin-bottom: 16px; }
+    .team h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -.02em;
+    }
+    .team-desc {
+      font-size: 14px;
+      color: var(--mid);
+      line-height: 1.75;
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .attorney-card {
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      position: relative;
+      height: 320px;
+      cursor: pointer;
+    }
+    .attorney-card img { transition: transform .4s ease; }
+    .attorney-card:hover img { transform: scale(1.05); }
+    .attorney-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 20px 16px;
+      background: linear-gradient(to top, rgba(0,0,0,0.80) 0%, transparent 100%);
+    }
+    .attorney-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+    }
+    .attorney-role {
+      font-size: 11px;
+      color: rgba(255,255,255,.7);
+      margin-top: 3px;
+    }
+
+    /* ─── Blog ──────────────────────────────────────────────── */
+    .blog {
+      padding: 100px 0;
+      background: var(--white);
+    }
+    .blog-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+      margin-bottom: 60px;
+    }
+    .blog .section-label { margin-bottom: 16px; }
+    .blog h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -.02em;
+    }
+    .blog-desc {
+      font-size: 14px;
+      color: var(--mid);
+      line-height: 1.75;
+    }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .blog-card {
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      background: var(--white);
+      border: 1px solid var(--light-border);
+      transition: box-shadow .25s, transform .25s;
+      cursor: pointer;
+    }
+    .blog-card:hover { box-shadow: var(--shadow-card); transform: translateY(-3px); }
+    .blog-img {
+      height: 200px;
+      overflow: hidden;
+    }
+    .blog-img img { transition: transform .4s ease; }
+    .blog-card:hover .blog-img img { transform: scale(1.05); }
+    .blog-content { padding: 22px 20px; }
+    .blog-title {
+      font-family: var(--font-serif);
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+    .blog-excerpt {
+      font-size: 12.5px;
+      color: var(--mid);
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+    .blog-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-top: 16px;
+      border-top: 1px solid var(--light-border);
+    }
+    .blog-avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--bg-warm);
+    }
+    .blog-author-name { font-size: 12px; font-weight: 600; }
+    .blog-author-role { font-size: 10.5px; color: var(--muted); }
+
+    /* ─── Contact ───────────────────────────────────────────── */
+    .contact {
+      padding: 100px 0;
+      background: var(--bg-off);
+    }
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .contact-img {
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      height: 560px;
+      position: relative;
+    }
+    .contact-img-overlay {
+      position: absolute;
+      bottom: 32px; left: 32px;
+    }
+    .contact h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -.02em;
+      margin-bottom: 10px;
+    }
+    .contact-sub {
+      font-size: 14px;
+      color: var(--mid);
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--near-black);
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      color: var(--near-black);
+      background: var(--white);
+      border: 1.5px solid var(--light-border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      width: 100%;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: #c0c0bc; }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--near-black);
+      box-shadow: 0 0 0 3px rgba(15,15,15,.07);
+    }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+
+    .phone-row {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 10px;
+    }
+    .privacy-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .privacy-row input[type="checkbox"] {
+      width: 16px; height: 16px;
+      margin-top: 2px;
+      cursor: pointer;
+      accent-color: var(--near-black);
+      flex-shrink: 0;
+    }
+    .privacy-row label {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .privacy-row a { text-decoration: underline; color: var(--near-black); }
+
+    .submit-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* ─── Footer CTA ────────────────────────────────────────── */
+    .footer-cta {
+      padding: 80px 0 40px;
+      background: var(--white);
+      text-align: center;
+      border-top: 1px solid var(--light-border);
+    }
+    .footer-headline {
+      font-family: var(--font-serif);
+      font-size: clamp(32px, 5vw, 68px);
+      font-weight: 700;
+      letter-spacing: -.03em;
+      line-height: 1.1;
+      color: var(--near-black);
+      margin-bottom: 10px;
+    }
+    .footer-email {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 4vw, 56px);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--near-black);
+      text-decoration: none;
+      transition: opacity .2s;
+    }
+    .footer-email:hover { opacity: .65; }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 60px auto 0;
+      padding: 24px 40px 0;
+      border-top: 1px solid var(--light-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-copy {
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+    .footer-socials {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .footer-socials a {
+      font-size: 12px;
+      color: var(--mid);
+      font-weight: 500;
+      transition: color .2s;
+    }
+    .footer-socials a:hover { color: var(--near-black); }
+    .footer-social-icons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .social-icon {
+      width: 32px; height: 32px;
+      border: 1px solid var(--light-border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background .2s, border-color .2s;
+    }
+    .social-icon:hover { background: var(--near-black); color: var(--white); border-color: var(--near-black); }
+
+    /* ─── Scroll Animations ─────────────────────────────────── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── Responsive ────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .practice-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 0 20px; }
+      .nav-inner  { padding: 0 20px; }
+
+      .hero-inner,
+      .about-inner,
+      .expertise-header,
+      .testimonials-header,
+      .team-header,
+      .blog-header,
+      .contact-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .hero-imgs, .about-imgs { height: 320px; }
+      .contact-img { height: 300px; }
+
+      .practice-grid { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .team-grid  { grid-template-columns: repeat(2, 1fr); }
+      .blog-grid  { grid-template-columns: 1fr; }
+      .form-row   { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+
+      .hero { padding: 50px 0 40px; }
+      .about, .expertise, .testimonials, .team, .blog, .contact { padding: 70px 0; }
+
+      .hero-img-main { width: 100%; height: 86%; right: 0; }
+      .hero-img-float { bottom: -20px; left: 10px; }
+    }
+
+    @media (max-width: 480px) {
+      .team-grid  { grid-template-columns: 1fr; }
+      .hero h1    { font-size: 32px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v18M5 6l-3 6h6L5 6zM19 6l-3 6h6L19 6z"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+        Lwyer & Associates
+      </a>
+      <div class="nav-right">
+        <button class="nav-icon-btn" aria-label="Search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <div class="nav-menu">
+          <div class="hamburger"><span></span><span></span><span></span></div>
+          MENU
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-left fade-up">
+          <div class="hero-badge-row">
+            <span class="badge"><span class="dot"></span>Lusaka</span>
+            <span class="sep">Advocates & Commissioners for Oaths</span>
+          </div>
+          <h1>Your Trusted Counsel for Zambian Law.</h1>
+          <p class="hero-desc">From complex commercial litigation in the High Court to specialized mining concessions, we provide the legal backbone for Zambia's most ambitious enterprises.</p>
+          <div class="hero-cta">
+            <button class="btn-dark-pill">
+              Schedule a Consultation
+              <span class="knob">→</span>
+            </button>
+            <button class="btn-circle" aria-label="Contact Now">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 012 4.18 2 2 0 014 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </button>
+            <span style="font-size:13px; color:var(--mid); font-weight:500;">+260 970 000 000</span>
+          </div>
+        </div>
+        <div class="hero-imgs fade-up" style="transition-delay:.15s">
+          <div class="hero-img-main">
+            <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=700&q=80" alt="Managing Partner in office" />
+          </div>
+          <div class="hero-img-float">
+            <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=400&q=80" alt="Legal gavel and scales" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about">
+    <div class="container">
+      <div class="about-inner">
+        <div class="about-left fade-up">
+          <p class="section-label">Our Firm</p>
+          <h2>Navigating Zambia’s legal landscape with precision.</h2>
+          <p>Founded in Lusaka over a decade ago, Lwyer & Associates is recognized as a premier law firm in Zambia. We have earned a robust reputation for facilitating seamless cross-border transactions within the SADC and COMESA regions.</p>
+          <p>Our advocates bring deep expertise in both common law and local statutory frameworks, ensuring compliance with the Zambia Development Agency (ZDA) and the Patents and Companies Registration Agency (PACRA).</p>
+          <div class="about-cta">
+            <button class="btn-outline">
+              Discover Our History
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="about-imgs fade-up" style="transition-delay:.15s">
+          <div class="about-img-main">
+            <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=500&q=80" alt="Senior Advocate consulting" />
+          </div>
+          <div class="about-img-float">
+            <img src="https://images.unsplash.com/photo-1556742044-3c52d6e88c62?auto=format&fit=crop&w=400&q=80" alt="Legal team meeting" />
+          </div>
+          <div class="reputation-badge">
+            <div class="rep-title">Tier 1 Chambers</div>
+            <div class="rep-sub">Recognized by the Law<br>Association of Zambia (LAZ).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="expertise">
+    <div class="container">
+      <div class="expertise-header fade-up">
+        <div>
+          <p class="section-label">Practice Areas</p>
+          <h2>Our Expertise</h2>
+        </div>
+        <p class="expertise-desc">We offer specialized advisory and litigation services tailored to the high-growth sectors driving the Zambian economy.</p>
+      </div>
+      <div class="practice-grid">
+        <div class="practice-card fade-up">
+          <img src="https://images.unsplash.com/photo-1579389083046-e3df9c2b3325?auto=format&fit=crop&w=600&q=80" alt="Mining operation" />
+          <div class="practice-card-label"><span>Mining & Energy Law</span></div>
+        </div>
+        <div class="practice-card fade-up" style="transition-delay:.1s">
+          <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=80" alt="Commercial property" />
+          <div class="practice-card-label"><span>Land & Conveyancing</span></div>
+        </div>
+        <div class="practice-card fade-up" style="transition-delay:.2s">
+          <img src="https://images.unsplash.com/photo-1542621334-a254cf47733d?auto=format&fit=crop&w=600&q=80" alt="Corporate boardroom" />
+          <div class="practice-card-label"><span>Corporate Governance</span></div>
+        </div>
+        <div class="practice-card fade-up" style="transition-delay:.05s">
+          <img src="https://images.unsplash.com/photo-1589578527966-fdac0f44566c?auto=format&fit=crop&w=600&q=80" alt="Courtroom setting" />
+          <div class="practice-card-label"><span>Dispute Resolution</span></div>
+        </div>
+        <div class="practice-card fade-up" style="transition-delay:.15s">
+          <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=600&q=80" alt="Contract review" />
+          <div class="practice-card-label"><span>Employment & Labour Law</span></div>
+        </div>
+        <div class="practice-card fade-up" style="transition-delay:.25s">
+          <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=600&q=80" alt="Financial documents" />
+          <div class="practice-card-label"><span>Tax & ZRA Compliance</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <div class="container">
+      <div class="testimonials-header fade-up">
+        <div>
+          <p class="section-label">Testimonial</p>
+          <h2>Trusted by Industry Leaders</h2>
+        </div>
+        <p class="testimonials-desc">Our firm is the partner of choice for multinational corporations and prominent local businesses operating across Zambia.</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card fade-up">
+          <div class="t-top">
+            <div class="t-rating">
+              <div class="stars">★★★★★</div>
+              <span class="score">5.0</span>
+            </div>
+            <div class="t-quote-icon">"</div>
+          </div>
+          <p class="t-body">Securing our investment license through the ZDA was incredibly smooth thanks to their team. Their understanding of Zambian corporate law is simply unmatched.</p>
+          <div class="t-author">
+            <div class="t-avatar">
+              <img src="https://images.unsplash.com/photo-1531123897727-8f129e1bf98c?auto=format&fit=crop&w=80&q=80" alt="Mwila K." />
+            </div>
+            <div>
+              <div class="t-name">Mwila K.</div>
+              <div class="t-role">Director, Lusaka Tech Hub</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card fade-up" style="transition-delay:.1s">
+          <div class="t-top">
+            <div class="t-rating">
+              <div class="stars">★★★★★</div>
+              <span class="score">4.9</span>
+            </div>
+            <div class="t-quote-icon">"</div>
+          </div>
+          <p class="t-body">When handling Ministry of Lands title transfers for our new estate development, they were fast, meticulous, and completely transparent about the process.</p>
+          <div class="t-author">
+            <div class="t-avatar">
+              <img src="https://images.unsplash.com/photo-1589156191108-c762ff4b96ab?auto=format&fit=crop&w=80&q=80" alt="Chileshe M." />
+            </div>
+            <div>
+              <div class="t-name">Chileshe M.</div>
+              <div class="t-role">CEO, Copperbelt Estates</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card fade-up" style="transition-delay:.2s">
+          <div class="t-top">
+            <div class="t-rating">
+              <div class="stars">★★★★★</div>
+              <span class="score">5.0</span>
+            </div>
+            <div class="t-quote-icon">"</div>
+          </div>
+          <p class="t-body">Their litigation team handled our commercial dispute at the High Court with absolute professionalism and secured a ruling entirely in our favor.</p>
+          <div class="t-author">
+            <div class="t-avatar">
+              <img src="https://images.unsplash.com/photo-1542596594-649edbc13630?auto=format&fit=crop&w=80&q=80" alt="Bwalya N." />
+            </div>
+            <div>
+              <div class="t-name">Bwalya N.</div>
+              <div class="t-role">Managing Director, Ndola Logistics</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="team">
+    <div class="container">
+      <div class="team-header fade-up">
+        <div>
+          <p class="section-label">State Counsel & Partners</p>
+          <h2>Meet Our Advocates</h2>
+        </div>
+        <p class="team-desc">A formidable team of legal minds admitted to the Zambian Bar, bringing decades of combined experience from the Subordinate Courts to the Supreme Court.</p>
+      </div>
+      <div class="team-grid">
+        <div class="attorney-card fade-up">
+          <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=400&q=80" alt="Mr. Chanda Musonda, SC" />
+          <div class="attorney-info">
+            <div class="attorney-name">Mr. Chanda Musonda, SC</div>
+            <div class="attorney-role">Managing Partner · State Counsel</div>
+          </div>
+        </div>
+        <div class="attorney-card fade-up" style="transition-delay:.1s">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Mrs. Mutale Phiri" />
+          <div class="attorney-info">
+            <div class="attorney-name">Mrs. Mutale Phiri</div>
+            <div class="attorney-role">Partner · Corporate & PACRA</div>
+          </div>
+        </div>
+        <div class="attorney-card fade-up" style="transition-delay:.2s">
+          <img src="https://images.unsplash.com/photo-1556864828-e61a6fba96b6?auto=format&fit=crop&w=400&q=80" alt="Mr. Kondwani Banda" />
+          <div class="attorney-info">
+            <div class="attorney-name">Mr. Kondwani Banda</div>
+            <div class="attorney-role">Partner · High Court Litigation</div>
+          </div>
+        </div>
+        <div class="attorney-card fade-up" style="transition-delay:.3s">
+          <img src="https://images.unsplash.com/photo-1531123414780-f74242c2b052?auto=format&fit=crop&w=400&q=80" alt="Ms. Thandiwe Zulu" />
+          <div class="attorney-info">
+            <div class="attorney-name">Ms. Thandiwe Zulu</div>
+            <div class="attorney-role">Senior Associate · Conveyancing</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blog">
+    <div class="container">
+      <div class="blog-header fade-up">
+        <div>
+          <p class="section-label">Legal Insights</p>
+          <h2>Zambian Law Updates</h2>
+        </div>
+        <p class="blog-desc">Stay informed with the latest updates on statutory changes, government gazettes, and expert legal analysis.</p>
+      </div>
+      <div class="blog-grid">
+        <div class="blog-card fade-up">
+          <div class="blog-img">
+            <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=600&q=80" alt="PACRA Compliance Guide" />
+          </div>
+          <div class="blog-content">
+            <h3 class="blog-title">Understanding PACRA's Beneficial Ownership Regulations</h3>
+            <p class="blog-excerpt">Navigating the recent amendments to the Companies Act and what it means for your corporate disclosures in Zambia.</p>
+            <div class="blog-author">
+              <div class="blog-avatar">
+                <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=60&q=80" alt="Chanda Musonda" />
+              </div>
+              <div>
+                <div class="blog-author-name">Chanda Musonda, SC</div>
+                <div class="blog-author-role">Managing Partner</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="blog-card fade-up" style="transition-delay:.1s">
+          <div class="blog-img">
+            <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=600&q=80" alt="Employment Code Act" />
+          </div>
+          <div class="blog-content">
+            <h3 class="blog-title">Navigating the Employment Code Act No. 3 of 2019</h3>
+            <p class="blog-excerpt">A comprehensive overview for employers on severance pay, gratuity, and managing fixed-term contracts under the new act.</p>
+            <div class="blog-author">
+              <div class="blog-avatar">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=60&q=80" alt="Mutale Phiri" />
+              </div>
+              <div>
+                <div class="blog-author-name">Mutale Phiri</div>
+                <div class="blog-author-role">Partner</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="blog-card fade-up" style="transition-delay:.2s">
+          <div class="blog-img">
+            <img src="https://images.unsplash.com/photo-1589578527966-fdac0f44566c?auto=format&fit=crop&w=600&q=80" alt="Ministry of Lands" />
+          </div>
+          <div class="blog-content">
+            <h3 class="blog-title">The Property Conveyancing Process at the Ministry of Lands</h3>
+            <p class="blog-excerpt">Step-by-step guidance on securing your title deeds, managing State Consent to Assign, and handling property tax.</p>
+            <div class="blog-author">
+              <div class="blog-avatar">
+                <img src="https://images.unsplash.com/photo-1531123414780-f74242c2b052?auto=format&fit=crop&w=60&q=80" alt="Thandiwe Zulu" />
+              </div>
+              <div>
+                <div class="blog-author-name">Thandiwe Zulu</div>
+                <div class="blog-author-role">Senior Associate</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact">
+    <div class="container">
+      <div class="contact-inner">
+        <div class="contact-img fade-up">
+          <img src="https://images.unsplash.com/photo-1556864828-e61a6fba96b6?auto=format&fit=crop&w=700&q=80" alt="Attorney ready to help" />
+          <div class="contact-img-overlay">
+            <button class="btn-dark-pill">
+              Visit Chambers
+              <span class="knob">→</span>
+            </button>
+          </div>
+        </div>
+        <div class="contact-form fade-up" style="transition-delay:.15s">
+          <h2>Instruct Our Chambers</h2>
+          <p class="contact-sub">Our offices are located in Rhodes Park, Lusaka. Send us an inquiry to discuss your brief.</p>
+
+          <form onsubmit="handleSubmit(event)" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fname">First name</label>
+                <input type="text" id="fname" name="fname" placeholder="First name" />
+              </div>
+              <div class="form-group">
+                <label for="lname">Last name</label>
+                <input type="text" id="lname" name="lname" placeholder="Last name" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="you@company.com" />
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone number</label>
+              <div class="phone-row">
+                <select id="country-code" name="country-code" style="padding:12px 8px; font-size:13px;">
+                  <option value="+260">ZM · +260</option>
+                  <option value="+27">ZA · +27</option>
+                  <option value="+44">UK · +44</option>
+                  <option value="+1">US · +1</option>
+                </select>
+                <input type="tel" id="phone" name="phone" placeholder="97 000 0000" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Nature of Brief</label>
+              <textarea id="message" name="message" placeholder="Provide a brief summary of your legal requirements..."></textarea>
+            </div>
+
+            <div class="privacy-row">
+              <input type="checkbox" id="privacy" name="privacy" />
+              <label for="privacy">You agree to our <a href="#">client confidentiality policy</a></label>
+            </div>
+
+            <div class="submit-row">
+              <button type="submit" class="btn-dark-pill">
+                Send Inquiry
+                <span class="knob">→</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer-cta">
+    <div class="footer-headline">Let's discuss your brief</div>
+    <a href="mailto:clerks@lwyer.co.zm" class="footer-email">clerks@lwyer.co.zm</a>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Lwyer & Associates. Regulated by the Law Association of Zambia (LAZ).</p>
+      <div class="footer-social-icons">
+        <a class="social-icon" href="#" title="Email" aria-label="Email">✉</a>
+        <a class="social-icon" href="#" title="LinkedIn" aria-label="LinkedIn">in</a>
+        <a class="social-icon" href="#" title="X / Twitter" aria-label="X">𝕏</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ─── Scroll Fade-In Observer ─── */
+    const fadeEls = document.querySelectorAll('.fade-up');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    fadeEls.forEach(el => observer.observe(el));
+
+    /* Trigger hero elements immediately */
+    document.querySelectorAll('.hero .fade-up').forEach(el => {
+      setTimeout(() => el.classList.add('visible'), 100);
+    });
+
+    /* ─── Form Submit Handler ─── */
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('[type="submit"]');
+      const orig = btn.innerHTML;
+      btn.innerHTML = 'Sending… <span class="knob">⏳</span>';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.innerHTML = 'Message sent! <span class="knob">✓</span>';
+        btn.style.background = '#2d6a4f';
+        setTimeout(() => {
+          btn.innerHTML = orig;
+          btn.disabled = false;
+          btn.style.background = '';
+          e.target.reset();
+        }, 3000);
+      }, 1200);
+    }
+
+    /* ─── Nav hamburger (optional open/close) ─── */
+    document.querySelector('.nav-menu').addEventListener('click', () => {
+      alert('Navigation menu logic here.');
+    });
+  </script>
+
+</body>
+</html>
